@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Download, Eye, Calendar, Globe, X, Menu } from "lucide-react"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
+import { PDFDocument } from "pdf-lib"
 
 export default function DocumentsPage() {
   const [selectedDocument, setSelectedDocument] = useState<any>(null)
@@ -73,10 +74,6 @@ export default function DocumentsPage() {
     },
   ]
 
-  const handleDownload = (doc: any, format: string) => {
-    // Simulate download
-    console.log(`Downloading ${doc.name} as ${format}`)
-  }
 
   //integrated functions
    useEffect(() => {
@@ -114,6 +111,69 @@ export default function DocumentsPage() {
 
     fetchDocuments()
   }, [isSignedIn, getToken])
+
+
+  const handleDownload = async (doc: Document) => {
+    if (!doc.signed_url) {
+      alert("No signed URL available for download")
+      return
+    }
+
+    try {
+      const response = await fetch(doc.signed_url)
+      if (!response.ok) {
+        throw new Error("Failed to fetch file")
+      }
+
+      const blob = await response.blob()
+      let pdfBlob: Blob
+
+      if (blob.type === "application/pdf") {
+        // Already a PDF
+        pdfBlob = blob
+      } else if (blob.type.startsWith("image/")) {
+        // Convert image to PDF
+        const arrayBuffer = await blob.arrayBuffer()
+        const pdfDoc = await PDFDocument.create()
+
+        let image
+        if (blob.type === "image/png") {
+          image = await pdfDoc.embedPng(arrayBuffer)
+        } else if (blob.type === "image/jpeg") {
+          image = await pdfDoc.embedJpg(arrayBuffer)
+        } else {
+          throw new Error("Unsupported image type")
+        }
+
+        const { width, height } = image.scale(1)
+        const page = pdfDoc.addPage([width, height])
+        page.drawImage(image, { x: 0, y: 0, width, height })
+
+        const pdfBytes = await pdfDoc.save()
+
+        // Robust fix: manually copy into a new ArrayBuffer-backed Uint8Array
+        const buffer = new ArrayBuffer(pdfBytes.length)
+        const view = new Uint8Array(buffer)
+        view.set(pdfBytes)
+        pdfBlob = new Blob([view], { type: "application/pdf" })
+      } else {
+        throw new Error("Unsupported file type")
+      }
+
+      // Create URL and trigger download
+      const blobUrl = URL.createObjectURL(pdfBlob)
+      const a = document.createElement("a")
+      a.href = blobUrl
+      a.download = "document.pdf" // Customize filename if needed
+      document.body.appendChild(a)
+      a.click()
+      URL.revokeObjectURL(blobUrl)
+      document.body.removeChild(a)
+    } catch (err) {
+      console.error("Error downloading file:", err)
+      alert("Unable to load document for download.")
+    }
+  }
 
   //end of integrated functions
 
@@ -408,7 +468,7 @@ export default function DocumentsPage() {
                     <p className="text-xs font-medium text-gray-700 uppercase tracking-wide">Download as:</p>
                     <div className="grid grid-cols-3 gap-2">
                       <button
-                        onClick={() => handleDownload(doc, "PDF")}
+                        onClick={() => handleDownload(doc)}
                         // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-red-200"
                       >
@@ -416,7 +476,7 @@ export default function DocumentsPage() {
                         PDF
                       </button>
                       <button
-                        onClick={() => handleDownload(doc, "JPEG")}
+                        // onClick={() => handleDownload(doc, "JPEG")}
                         // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-blue-200"
                       >
@@ -424,7 +484,7 @@ export default function DocumentsPage() {
                         JPEG
                       </button>
                       <button
-                        onClick={() => handleDownload(doc, "PNG")}
+                        // onClick={() => handleDownload(doc, "PNG")}
                         // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-green-200"
                       >
