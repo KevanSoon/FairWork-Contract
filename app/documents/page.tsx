@@ -1,15 +1,28 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Download, Eye, Calendar, Globe, X, Menu } from "lucide-react"
-import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
+import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
 
 export default function DocumentsPage() {
   const [selectedDocument, setSelectedDocument] = useState<any>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isSignedIn } = useUser()
+  
+  //integrate usestates
+  type Document = {
+  id: string
+  name?: string | null
+  type?: string | null
+  size?: string | null
+  signed_url?: string | null
+}
+  const [loading, setLoading] = useState(true)
+  const [savedDocuments, setSavedDocuments] = useState<Document[]>([])
+  const { getToken } = useAuth()
+  //end of integrated usestates
   
 
   // Placeholder documents data
@@ -64,6 +77,45 @@ export default function DocumentsPage() {
     // Simulate download
     console.log(`Downloading ${doc.name} as ${format}`)
   }
+
+  //integrated functions
+   useEffect(() => {
+    if (!isSignedIn) return
+
+    async function fetchDocuments() {
+      try {
+        const token = await getToken()
+
+        if (!token) {
+          console.error("No Clerk token found")
+          setSavedDocuments([])
+          return
+        }
+
+        const res = await fetch("https://kevansoon-backend.hf.space/api/documents", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch documents. Status: ${res.status}`)
+        }
+
+        const data: Document[] = await res.json()
+        setSavedDocuments(data)
+      } catch (error) {
+        console.error("Fetch error:", error)
+        setSavedDocuments([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDocuments()
+  }, [isSignedIn, getToken])
+
+  //end of integrated functions
 
   if (!isSignedIn) {
     return (
@@ -181,6 +233,13 @@ export default function DocumentsPage() {
     )
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading documents...</p>
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -287,21 +346,27 @@ export default function DocumentsPage() {
 
         {/* Documents Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-          {documents.map((doc) => (
+          {savedDocuments.map((doc) => (
             <div
               key={doc.id}
               className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
             >
               {/* Document Preview */}
               <div className="relative h-40 md:h-48 bg-gray-100">
-                <img src={doc.previewUrl || "/placeholder.svg"} alt={doc.name} className="w-full h-full object-cover" />
+                <img src={doc.signed_url || "/placeholder.svg"}  className="w-full h-full object-cover" />
                 <div className="absolute top-2 md:top-3 right-2 md:right-3">
-                  <span
+                  {/* <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       doc.status === "Completed" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
                     }`}
                   >
                     {doc.status}
+                  </span> */}
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 
+                    `}
+                  >
+                    Completed
                   </span>
                 </div>
               </div>
@@ -309,7 +374,7 @@ export default function DocumentsPage() {
               {/* Document Info */}
               <div className="p-4 md:p-6">
                 <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm md:text-base">{doc.name}</h3>
-
+{/* 
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-xs md:text-sm text-gray-600">
                     <Globe className="h-3 w-3 md:h-4 md:w-4 mr-2 flex-shrink-0" />
@@ -325,7 +390,7 @@ export default function DocumentsPage() {
                     <span>{doc.pages} pages</span>
                     <span>{doc.fileSize}</span>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
@@ -344,7 +409,7 @@ export default function DocumentsPage() {
                     <div className="grid grid-cols-3 gap-2">
                       <button
                         onClick={() => handleDownload(doc, "PDF")}
-                        disabled={doc.status !== "Completed"}
+                        // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-red-200"
                       >
                         <Download className="h-3 w-3 mr-1" />
@@ -352,7 +417,7 @@ export default function DocumentsPage() {
                       </button>
                       <button
                         onClick={() => handleDownload(doc, "JPEG")}
-                        disabled={doc.status !== "Completed"}
+                        // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-blue-200"
                       >
                         <Download className="h-3 w-3 mr-1" />
@@ -360,7 +425,7 @@ export default function DocumentsPage() {
                       </button>
                       <button
                         onClick={() => handleDownload(doc, "PNG")}
-                        disabled={doc.status !== "Completed"}
+                        // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-green-200"
                       >
                         <Download className="h-3 w-3 mr-1" />
@@ -392,7 +457,7 @@ export default function DocumentsPage() {
             </div>
             <div className="p-4 md:p-6">
               <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
-                <iframe src={selectedDocument.previewUrl} className="w-full h-full" title={selectedDocument.name} />
+                <iframe src={selectedDocument.signed_url} className="w-full h-full" title={selectedDocument.name} />
               </div>
             </div>
           </div>
