@@ -11,11 +11,21 @@ import { Upload, FileText, Languages, ArrowRight, Menu, X, CheckCircle } from "l
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 
 export default function TranslatePage() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [targetLanguage, setTargetLanguage] = useState("")
   const [originalText, setOriginalText] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isSignedIn } = useUser()
+  
+
+  // integrated usestates
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [translatedHtml, setTranslatedHtml] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [iframeHeight, setIframeHeight] = useState<number | string>("auto")
+  const [zoomLevel, setZoomLevel] = useState(1) // New state for zoom level
+  //end of integrated usestates
 
   const languages = [
     { code: "ms", name: "Bahasa Melayu", flag: "🇲🇾" },
@@ -24,10 +34,11 @@ export default function TranslatePage() {
     { code: "ta", name: "Tamil", flag: "🇮🇳" },
   ]
 
+   // integrated functions
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      setSelectedFile(file)
+      setUploadedFile(file)
       // Simulate reading file content
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -35,8 +46,16 @@ export default function TranslatePage() {
         setOriginalText(content.slice(0, 1000)) // Limit for demo
       }
       reader.readAsText(file)
+     
+      setTranslatedHtml(null)
+      setErrorMessage(null)
+      setIframeHeight("auto")
+      setZoomLevel(1) // Reset zoom level on new file upload
+      // The useEffect will handle setting originalImageSrc
     }
   }
+
+  //end of integrated functions
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
@@ -47,7 +66,7 @@ export default function TranslatePage() {
     const files = e.dataTransfer.files
     if (files.length > 0) {
       const file = files[0]
-      setSelectedFile(file)
+      setUploadedFile(file)
       // Simulate reading file content
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -58,7 +77,7 @@ export default function TranslatePage() {
     }
   }
 
-  const canTranslate = selectedFile && targetLanguage
+  const canTranslate = uploadedFile && targetLanguage
 
 
    if (!isSignedIn) {
@@ -295,7 +314,7 @@ export default function TranslatePage() {
             {/* File Upload Zone */}
             <div
               className={`border-2 border-dashed rounded-xl p-8 md:p-12 text-center transition-all duration-200 ${
-                selectedFile
+                uploadedFile
                   ? "border-green-300 bg-green-50"
                   : "border-gray-300 hover:border-[#0076D6] hover:bg-blue-50"
               }`}
@@ -306,24 +325,24 @@ export default function TranslatePage() {
                 type="file"
                 id="file-upload"
                 className="hidden"
-                accept=".txt,.doc,.docx,.pdf,.ppt,.pptx"
+                accept=".pdf,.png,.jpg,.jpeg"
                 onChange={handleFileUpload}
               />
               <label htmlFor="file-upload" className="cursor-pointer block">
-                {selectedFile ? (
+                {uploadedFile ? (
                   <div className="space-y-4">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                     <div>
-                      <p className="text-xl font-semibold text-green-700 mb-2">{selectedFile.name}</p>
+                      <p className="text-xl font-semibold text-green-700 mb-2">{uploadedFile.name}</p>
                       <p className="text-sm text-green-600">
-                        File uploaded successfully • {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                        File uploaded successfully • {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                       <Button
                         variant="outline"
                         className="mt-4 text-[#0076D6] border-[#0076D6] hover:bg-[#0076D6] hover:text-white bg-transparent"
                         onClick={(e) => {
                           e.preventDefault()
-                          setSelectedFile(null)
+                          setUploadedFile(null)
                           setOriginalText("")
                         }}
                       >
@@ -344,7 +363,7 @@ export default function TranslatePage() {
             </div>
 
             {/* Language Detection & Selection */}
-            {selectedFile && (
+            {uploadedFile && (
               <div className="space-y-6">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-center gap-3">
@@ -395,7 +414,7 @@ export default function TranslatePage() {
                   className="w-full bg-gray-300 text-gray-500 h-14 text-lg font-semibold cursor-not-allowed"
                 >
                   <Languages className="w-5 h-5 mr-3" />
-                  {!selectedFile ? "Upload a document first" : "Select target language"}
+                  {!uploadedFile ? "Upload a document first" : "Select target language"}
                 </Button>
               )}
             </div>
