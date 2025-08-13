@@ -175,6 +175,36 @@ export default function DocumentsPage() {
     }
   }
 
+
+  const handleSaveAsImage = async (doc: Document, type: "png" | "jpeg") => {
+    if (!doc.signed_url) {
+      alert("No signed URL available for download")
+      return
+    }
+
+    try {
+      // Fetch the file to avoid potential CORS or download issues
+      const response = await fetch(doc.signed_url)
+      if (!response.ok) throw new Error("Failed to fetch file")
+
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+
+      const link = document.createElement("a")
+      const baseName = doc.name?.split(".")[0] ?? "document"
+      link.href = url
+      link.download = `${baseName}.${type}`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      URL.revokeObjectURL(url) // clean up
+    } catch (err) {
+      console.error("Download error:", err)
+      alert("Failed to download the image. Please try again.")
+    }
+  }
+
   //end of integrated functions
 
   if (!isSignedIn) {
@@ -476,7 +506,7 @@ export default function DocumentsPage() {
                         PDF
                       </button>
                       <button
-                        // onClick={() => handleDownload(doc, "JPEG")}
+                        onClick={() => handleSaveAsImage(doc, "jpeg")}
                         // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-blue-200"
                       >
@@ -484,7 +514,7 @@ export default function DocumentsPage() {
                         JPEG
                       </button>
                       <button
-                        // onClick={() => handleDownload(doc, "PNG")}
+                        onClick={() => handleSaveAsImage(doc, "png")}
                         // disabled={doc.status !== "Completed"}
                         className="flex items-center justify-center px-2 py-2 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-green-200"
                       >
