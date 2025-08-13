@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Upload, FileText, Languages, ArrowRight, Menu, X, CheckCircle } from "lucide-react"
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 
 export default function TranslatePage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [targetLanguage, setTargetLanguage] = useState("")
   const [originalText, setOriginalText] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { isSignedIn } = useUser()
 
   const languages = [
     { code: "ms", name: "Bahasa Melayu", flag: "🇲🇾" },
@@ -61,63 +63,90 @@ export default function TranslatePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <div className="flex items-center space-x-4 md:space-x-8">
               <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
               <nav className="hidden md:flex space-x-6">
-                <a href="/" className="text-gray-700 hover:text-gray-900 transition-colors">
+                <a href="/" className="text-[#0076D6] font-medium">
                   Home
                 </a>
-                <a href="/translate" className="text-[#0076D6] font-medium">
+                {isSignedIn && (
+                <a href="/translate" className="text-gray-700 hover:text-gray-900">
                   Translate
                 </a>
-                <a href="/documents" className="text-gray-700 hover:text-gray-900 transition-colors">
+                )}
+                {isSignedIn && (
+                <a href="/documents" className="text-gray-700 hover:text-gray-900">
                   Documents
                 </a>
+                )}
               </nav>
             </div>
+             {isSignedIn ? (
+              <div className="flex items-center space-x-2 md:space-x-4">
+                <UserButton afterSignOutUrl="/" />
+                  <button
+                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+              </div>
+           
+              
+            ) : (
             <div className="flex items-center space-x-2 md:space-x-4">
-              <Button variant="ghost" className="text-gray-700 text-sm md:text-base px-2 md:px-4 hover:bg-gray-100">
+              <SignInButton mode="modal">
+              <Button variant="ghost" className="text-gray-700 text-sm md:text-base px-2 md:px-4">
                 Sign in
               </Button>
-              <Button className="bg-[#0076D6] hover:bg-[#005bb5] text-white text-sm md:text-base px-3 md:px-4 transition-colors">
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button className="bg-[#0076D6] hover:bg-[#005bb5] text-white text-sm md:text-base px-3 md:px-4">
                 Sign up
               </Button>
+              </SignUpButton>
               <button
-                className="md:hidden p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle mobile menu"
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
+             )}
           </div>
           {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4 bg-white">
-              <nav className="flex flex-col space-y-2">
+            <div className="md:hidden border-t border-gray-200 py-4">
+              <nav className="flex flex-col space-y-4">
                 <a
                   href="/"
-                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-4 py-3 text-base rounded-md transition-colors"
+                  className="text-[#0076D6] font-medium px-4 py-2 text-base"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Home
                 </a>
+                {isSignedIn && (
                 <a
                   href="/translate"
-                  className="text-[#0076D6] font-medium bg-blue-50 px-4 py-3 text-base rounded-md"
+                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Translate
                 </a>
+                 )}
+                 {isSignedIn && (
                 <a
                   href="/documents"
-                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-4 py-3 text-base rounded-md transition-colors"
+                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Documents
                 </a>
+                 )}
               </nav>
             </div>
           )}

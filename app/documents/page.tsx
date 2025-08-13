@@ -2,11 +2,15 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { Download, Eye, Calendar, Globe, X, Menu } from "lucide-react"
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 
 export default function DocumentsPage() {
   const [selectedDocument, setSelectedDocument] = useState<any>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { isSignedIn } = useUser()
+  
 
   // Placeholder documents data
   const documents = [
@@ -64,32 +68,52 @@ export default function DocumentsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+     <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <div className="flex items-center space-x-4 md:space-x-8">
-              <Link href="/" className="flex items-center">
-                <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
-              </Link>
-              <nav className="hidden md:flex space-x-8">
-                <Link href="/" className="text-gray-600 hover:text-[#0076D6] transition-colors">
+              <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
+              <nav className="hidden md:flex space-x-6">
+                <a href="/" className="text-[#0076D6] font-medium">
                   Home
-                </Link>
-                <Link href="/translate" className="text-gray-600 hover:text-[#0076D6] transition-colors">
+                </a>
+                {isSignedIn && (
+                <a href="/translate" className="text-gray-700 hover:text-gray-900">
                   Translate
-                </Link>
-                <Link href="/documents" className="text-[#0076D6] font-medium">
+                </a>
+                )}
+                {isSignedIn && (
+                <a href="/documents" className="text-gray-700 hover:text-gray-900">
                   Documents
-                </Link>
+                </a>
+                )}
               </nav>
             </div>
+             {isSignedIn ? (
+              <div className="flex items-center space-x-2 md:space-x-4">
+                <UserButton afterSignOutUrl="/" />
+                  <button
+                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+              </div>
+           
+              
+            ) : (
             <div className="flex items-center space-x-2 md:space-x-4">
-              <button className="text-gray-600 hover:text-[#0076D6] transition-colors text-sm md:text-base px-2 md:px-4">
-                Sign In
-              </button>
-              <button className="bg-[#0076D6] text-white px-3 md:px-6 py-2 rounded-lg hover:bg-[#005bb5] transition-colors text-sm md:text-base">
-                Sign Up
-              </button>
+              <SignInButton mode="modal">
+              <Button variant="ghost" className="text-gray-700 text-sm md:text-base px-2 md:px-4">
+                Sign in
+              </Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button className="bg-[#0076D6] hover:bg-[#005bb5] text-white text-sm md:text-base px-3 md:px-4">
+                Sign up
+              </Button>
+              </SignUpButton>
               <button
                 className="md:hidden p-2 text-gray-700 hover:text-gray-900"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -98,31 +122,36 @@ export default function DocumentsPage() {
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
+             )}
           </div>
           {isMobileMenuOpen && (
             <div className="md:hidden border-t border-gray-200 py-4">
               <nav className="flex flex-col space-y-4">
-                <Link
+                <a
                   href="/"
-                  className="text-gray-600 hover:text-[#0076D6] transition-colors px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/translate"
-                  className="text-gray-600 hover:text-[#0076D6] transition-colors px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Translate
-                </Link>
-                <Link
-                  href="/documents"
                   className="text-[#0076D6] font-medium px-4 py-2 text-base"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  Home
+                </a>
+                {isSignedIn && (
+                <a
+                  href="/translate"
+                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Translate
+                </a>
+                 )}
+                 {isSignedIn && (
+                <a
+                  href="/documents"
+                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Documents
-                </Link>
+                </a>
+                 )}
               </nav>
             </div>
           )}
