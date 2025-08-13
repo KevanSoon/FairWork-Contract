@@ -42,7 +42,9 @@ export default function TranslatePage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [iframeHeight, setIframeHeight] = useState<number | string>("auto")
   const [zoomLevel, setZoomLevel] = useState(1) // New state for zoom level
+  const [isLoading, setIsLoading] = useState(false)
 
+  //from translate/results
   const [copied, setCopied] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   //end of integrated usestates
@@ -106,6 +108,51 @@ export default function TranslatePage() {
         title: "Translated Document",
         url: translatedDocumentUrl,
       })
+    }
+  }
+
+  const handleTranslate = async () => {
+    if (!uploadedFile) {
+      setErrorMessage("Please upload a file to translate.")
+      return
+    }
+    setIsLoading(true)
+    setTranslatedHtml(null)
+    setErrorMessage(null)
+    setIframeHeight("auto")
+
+    const formData = new FormData()
+    formData.append("target_language", targetLanguage)
+    formData.append("file", uploadedFile)
+
+    try {
+      const response = await fetch("https://kevansoon-backend.hf.space/api/translate_file_dual_ocr", {
+        method: "POST",
+        body: formData,
+      })
+      if (!response.ok) {
+        let errorDetail = "Translation failed due to a server error."
+        try {
+          const errorData = await response.json()
+          errorDetail = errorData.detail || errorDetail
+        } catch (jsonError) {
+          errorDetail = response.statusText
+        }
+        throw new Error(errorDetail)
+      }
+      const htmlContent = await response.text()
+      setTranslatedHtml(htmlContent)
+      // handleContractAnalyze(htmlContent)
+      
+    } catch (error) {
+      console.error("Error translating document:", error)
+      if (error instanceof TypeError) {
+        setErrorMessage("Could not connect to the server. Is it running on http://localhost:8000?")
+      } else {
+        setErrorMessage(error instanceof Error ? error.message : "An unknown error occurred.")
+      }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -457,13 +504,15 @@ export default function TranslatePage() {
             {/* Translate Button */}
             <div className="pt-4">
               {canTranslate ? (
-                <Link href="/translate/result" className="block">
-                  <Button className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white h-14 text-lg font-semibold transition-all duration-200 hover:shadow-lg">
+                
+                  <Button
+                  onClick={handleTranslate} 
+                  className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white h-14 text-lg font-semibold transition-all duration-200 hover:shadow-lg">
                     <Languages className="w-5 h-5 mr-3" />
                     Translate Document
                     <ArrowRight className="w-5 h-5 ml-3" />
                   </Button>
-                </Link>
+                
               ) : (
                 <Button
                   disabled
@@ -718,7 +767,7 @@ export default function TranslatePage() {
                   )}
                   <div className={isFullscreen ? "p-4 md:p-6 pt-0" : "p-4 md:p-6"}>
                     <iframe
-                      src={translatedDocumentUrl}
+                      srcDoc={translatedHtml}
                       className={`w-full border border-gray-200 rounded-lg shadow-sm ${
                         isFullscreen ? "h-[calc(100vh-140px)] md:h-[calc(100vh-180px)]" : "h-[400px] md:h-[600px]"
                       }`}
@@ -737,7 +786,6 @@ export default function TranslatePage() {
         </div>
       </div>
     )}
-
     </div>
 
     
