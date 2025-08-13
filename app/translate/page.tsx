@@ -3,7 +3,7 @@
 import type React from "react"
 import Link from "next/link"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -26,7 +26,8 @@ import {
   Menu,
   X,
 } from "lucide-react"
-import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
+import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
+import html2canvas from "html2canvas" 
 
 export default function TranslatePage() {
 
@@ -44,10 +45,13 @@ export default function TranslatePage() {
   const [iframeHeight, setIframeHeight] = useState<number | string>("auto")
   const [zoomLevel, setZoomLevel] = useState(1) // New state for zoom level
   const [isLoading, setIsLoading] = useState(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const { getToken } = useAuth()
 
   //from translate/results
   const [copied, setCopied] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  
   //end of integrated usestates
 
   const languages = [
@@ -88,14 +92,16 @@ export default function TranslatePage() {
 
   const translatedDocumentUrl = "/business-proposal-bahasa-melayu.png"
 
-  const handleDownload = () => {
-    const link = document.createElement("a")
-    link.href = translatedDocumentUrl
-    link.download = `translated-${translationInfo.fileName}`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+  
+
+  // const handleDownload = () => {
+  //   const link = document.createElement("a")
+  //   link.href = translatedDocumentUrl
+  //   link.download = `translated-${translationInfo.fileName}`
+  //   document.body.appendChild(link)
+  //   link.click()
+  //   document.body.removeChild(link)
+  // }
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(`Translated document: ${translationInfo.fileName}`)
@@ -154,6 +160,56 @@ export default function TranslatePage() {
       }
     } finally {
       setIsLoading(false)
+    }
+  }
+
+   const handleSaveAsImage = async () => {
+    if (!iframeRef.current) return
+    const iframe = iframeRef.current
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
+    if (!iframeDoc || !iframeDoc.body) {
+      alert("Iframe content not available.")
+      return
+    }
+
+    try {
+      const token = await getToken()
+      if (!token) {
+        alert("User not authenticated.")
+        return
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      const canvas = await html2canvas(iframeDoc.body, {
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        scale: 2,
+      })
+
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob((b) => resolve(b), "image/png"))
+
+      if (!blob) {
+        alert("Failed to generate image.")
+        return
+      }
+
+      const formData = new FormData()
+      formData.append("file", new File([blob], "translated.png", { type: "image/png" }))
+
+      const res = await fetch("https://kevansoon-backend.hf.space/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+
+      const result = await res.json()
+      alert(res.ok ? `✅ Uploaded Translated Document Successfully!` : `❌ Error: ${result.detail || "Upload failed"}`)
+    } catch (error: any) {
+      console.error("Save as image failed:", error)
+      alert(`❌ Unexpected error: ${error.message}`)
     }
   }
 
@@ -722,11 +778,11 @@ export default function TranslatePage() {
 
             <div className="space-y-3">
               <Button
-                onClick={handleDownload}
+                onClick={handleSaveAsImage}
                 className="w-full bg-[#0076D6] hover:bg-[#005bb5] h-12 font-medium text-base"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Download Document
+                Save to Documents
               </Button>
 
               <div className="grid grid-cols-2 gap-3">
@@ -786,6 +842,7 @@ export default function TranslatePage() {
                   )}
                   <div className={isFullscreen ? "p-4 md:p-6 pt-0" : "p-4 md:p-6"}>
                     <iframe
+                      ref={iframeRef}
                       srcDoc={translatedHtml}
                       className={`w-full border border-gray-200 rounded-lg shadow-sm ${
                         isFullscreen ? "h-[calc(100vh-140px)] md:h-[calc(100vh-180px)]" : "h-[400px] md:h-[600px]"
