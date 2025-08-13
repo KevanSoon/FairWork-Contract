@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 // import { Upload, FileText, Languages, ArrowRight, Menu, X, CheckCircle } from "lucide-react"
 import {
+  RefreshCw,
   Upload,
   Download,
   Edit3,
@@ -391,7 +392,7 @@ export default function TranslatePage() {
           )}
         </div>
       </header>
-
+      {!isLoading && !translatedHtml && !errorMessage && (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Page Header */}
         <div className="text-center mb-8 md:mb-12">
@@ -570,6 +571,24 @@ export default function TranslatePage() {
           </div>
         </div>
       </div>
+      )}
+    {/*loading page*/}
+      {isLoading && (
+            <div className="text-center py-20">
+              <div className="flex items-center justify-center gap-3">
+                <RefreshCw className="w-6 h-6 animate-spin" style={{ color: "#e74f4f" }} />
+                <span className="text-gray-600 font-medium text-lg">Processing Document...</span>
+              </div>
+              <p className="text-sm text-gray-500 mt-2">This may take a moment for large or complex files.</p>
+            </div>
+          )}
+          {errorMessage && (
+            <div className="text-center py-10 bg-red-50 border-l-4 border-red-400 text-red-700 p-4" role="alert">
+              <p className="font-bold">An Error Occurred</p>
+              <p>{errorMessage}</p>
+            </div>
+          )}
+
     {/* result page */}
     {translatedHtml && (
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
