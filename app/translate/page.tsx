@@ -34,7 +34,7 @@ export default function TranslatePage() {
   // const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [targetLanguage, setTargetLanguage] = useState("")
   const [originalText, setOriginalText] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   const { isSignedIn } = useUser()
   
 
@@ -290,102 +290,12 @@ export default function TranslatePage() {
    if (!isSignedIn) {
     return (
        <div className="min-h-screen bg-gray-50">
-           <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 md:h-20">
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
-              <nav className="hidden md:flex space-x-6">
-                <a href="/" className="text-[#0076D6] font-medium">
-                  Home
-                </a>
-                {isSignedIn && (
-                <a href="/translate" className="text-gray-700 hover:text-gray-900">
-                  Translate
-                </a>
-                )}
-                {isSignedIn && (
-                <a href="/documents" className="text-gray-700 hover:text-gray-900">
-                  Documents
-                </a>
-                )}
-              </nav>
-            </div>
-             {isSignedIn ? (
-              <div className="flex items-center space-x-2 md:space-x-4">
-                <UserButton afterSignOutUrl="/" />
-                  <button
-                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-              </div>
-           
-              
-            ) : (
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <SignInButton mode="modal">
-              <Button variant="ghost" className="text-gray-700 text-sm md:text-base px-2 md:px-4">
-                Sign in
-              </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <Button className="bg-[#0076D6] hover:bg-[#005bb5] text-white text-sm md:text-base px-3 md:px-4">
-                Sign up
-              </Button>
-              </SignUpButton>
-              <button
-                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-             )}
-          </div>
-          {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4">
-              <nav className="flex flex-col space-y-4">
-                <a
-                  href="/"
-                  className="text-[#0076D6] font-medium px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </a>
-                {isSignedIn && (
-                <a
-                  href="/translate"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Translate
-                </a>
-                 )}
-                 {isSignedIn && (
-                <a
-                  href="/documents"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Documents
-                </a>
-                 )}
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md mx-auto text-center p-8">
           <div
             className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
             style={{ backgroundColor: "#e74f4f" }}
           >
-            
           </div>
           <h2 className="text-2xl font-bold mb-4" style={{ color: "#4B4B4B" }}>
             Sign In Required
@@ -399,103 +309,11 @@ export default function TranslatePage() {
         </div>
       </div>
        </div>
-     
     )
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      
-      {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 md:h-20">
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
-              <nav className="hidden md:flex space-x-6">
-                <a href="/" className="text-[#0076D6] font-medium">
-                  Home
-                </a>
-                {isSignedIn && (
-                <a href="/translate" className="text-gray-700 hover:text-gray-900">
-                  Translate
-                </a>
-                )}
-                {isSignedIn && (
-                <a href="/documents" className="text-gray-700 hover:text-gray-900">
-                  Documents
-                </a>
-                )}
-              </nav>
-            </div>
-             {isSignedIn ? (
-              <div className="flex items-center space-x-2 md:space-x-4">
-                <UserButton afterSignOutUrl="/" />
-                  <button
-                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-              </div>
-           
-              
-            ) : (
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <SignInButton mode="modal">
-              <Button variant="ghost" className="text-gray-700 text-sm md:text-base px-2 md:px-4">
-                Sign in
-              </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <Button className="bg-[#0076D6] hover:bg-[#005bb5] text-white text-sm md:text-base px-3 md:px-4">
-                Sign up
-              </Button>
-              </SignUpButton>
-              <button
-                className="md:hidden p-2 text-gray-700 hover:text-gray-900"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-             )}
-          </div>
-          {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4">
-              <nav className="flex flex-col space-y-4">
-                <a
-                  href="/"
-                  className="text-[#0076D6] font-medium px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </a>
-                {isSignedIn && (
-                <a
-                  href="/translate"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Translate
-                </a>
-                 )}
-                 {isSignedIn && (
-                <a
-                  href="/documents"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Documents
-                </a>
-                 )}
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
       {!isLoading && !translatedHtml && !errorMessage && (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Page Header */}
