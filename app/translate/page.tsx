@@ -26,6 +26,7 @@ import {
   Menu,
   X,
   Lock,
+  AlertCircle
 } from "lucide-react"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
 import html2canvas from "html2canvas" 
