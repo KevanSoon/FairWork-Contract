@@ -47,6 +47,7 @@ export default function TranslatePage() {
   const [isLoading, setIsLoading] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { getToken } = useAuth()
+  const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null)
 
   //from translate/results
   const [copied, setCopied] = useState(false)
@@ -91,17 +92,6 @@ export default function TranslatePage() {
   }
 
   const translatedDocumentUrl = "/business-proposal-bahasa-melayu.png"
-
-  
-
-  // const handleDownload = () => {
-  //   const link = document.createElement("a")
-  //   link.href = translatedDocumentUrl
-  //   link.download = `translated-${translationInfo.fileName}`
-  //   document.body.appendChild(link)
-  //   link.click()
-  //   document.body.removeChild(link)
-  // }
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(`Translated document: ${translationInfo.fileName}`)
@@ -214,6 +204,22 @@ export default function TranslatePage() {
   }
 
 
+    // Effect to create and revoke object URL for the uploaded image
+  useEffect(() => {
+    if (uploadedFile && uploadedFile.type.startsWith("image/")) {
+      const objectUrl = URL.createObjectURL(uploadedFile)
+      setOriginalImageSrc(objectUrl)
+
+      return () => {
+        URL.revokeObjectURL(objectUrl)
+        setOriginalImageSrc(null)
+      }
+    } else {
+      setOriginalImageSrc(null)
+    }
+  }, [uploadedFile])
+
+
   //end of integrated functions
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -237,6 +243,27 @@ export default function TranslatePage() {
   }
 
   const canTranslate = uploadedFile && targetLanguage
+
+
+   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!iframeRef.current) return;
+      const iframeDoc = iframeRef.current.contentDocument || iframeRef.current.contentWindow?.document;
+      if (!iframeDoc) return;
+
+      const input = iframeDoc.querySelector<HTMLInputElement>("input");
+      if (input) {
+        input.focus();
+        // Insert the typed key
+        if (e.key.length === 1) input.value += e.key;
+        // Handle backspace
+        if (e.key === "Backspace") input.value = input.value.slice(0, -1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
 
    if (!isSignedIn) {
@@ -648,7 +675,7 @@ export default function TranslatePage() {
     {/* result page */}
     {translatedHtml && (
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
-        <div className="mb-6 md:mb-8">
+        {/* <div className="mb-6 md:mb-8">
           <Link href="/translate">
             <Button
               variant="ghost"
@@ -658,7 +685,7 @@ export default function TranslatePage() {
               Back to Upload
             </Button>
           </Link>
-        </div>
+        </div> */}
 
         <div className="text-center mb-8 md:mb-10">
           <div className="flex items-center justify-center mb-4 md:mb-6">
@@ -668,9 +695,9 @@ export default function TranslatePage() {
           </div>
           <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2 md:mb-3">Translation Complete!</h1>
           <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Your document has been successfully translated from{" "}
-            <span className="font-semibold text-[#0076D6]">{translationInfo.originalLanguage}</span> to{" "}
-            <span className="font-semibold text-[#0076D6]">{translationInfo.targetLanguage}</span>
+            Your document has been successfully translated to{" "}
+            {/* <span className="font-semibold text-[#0076D6]">{translationInfo.originalLanguage}</span> to{" "} */}
+            <span className="font-semibold text-[#0076D6]">{targetLanguage}</span>
           </p>
         </div>
 
@@ -683,24 +710,27 @@ export default function TranslatePage() {
               </CardHeader>
               <CardContent className="space-y-4 md:space-y-6">
                 <div className="relative">
-                  <img
-                    src="/document-preview-contract.png"
-                    alt="Document Preview"
-                    className="w-full h-32 md:h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
-                  />
+                 
+                 {uploadedFile?.type.startsWith("image/") && originalImageSrc ? (
+                    <img
+                      src={originalImageSrc || "/placeholder.svg"}
+                      alt="Document Preview"
+                      className="w-full h-32 md:h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
+                    />
+                  ) : null}
                   <div className="absolute top-2 right-2">
                     <Badge variant="secondary" className="bg-white/90 text-gray-700 text-xs">
                       Preview
                     </Badge>
                   </div>
                 </div>
-
+                
                 <div className="space-y-3 md:space-y-4">
                   <div className="flex items-start gap-3">
                     <FileText className="w-4 h-4 md:w-5 md:h-5 text-gray-500 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{translationInfo.fileName}</p>
-                      <p className="text-xs text-gray-500 mt-1">{translationInfo.wordCount.toLocaleString()} words</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{uploadedFile?.name}</p>
+                      {/* <p className="text-xs text-gray-500 mt-1">{translationInfo.wordCount.toLocaleString()} words</p> */}
                     </div>
                   </div>
 
@@ -708,16 +738,16 @@ export default function TranslatePage() {
                     <Languages className="w-4 h-4 md:w-5 md:h-5 text-gray-500 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-gray-900">
-                        {translationInfo.originalLanguage} → {translationInfo.targetLanguage}
+                        → {targetLanguage}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">Completed in {translationInfo.translationTime}</p>
+                      {/* <p className="text-xs text-gray-500 mt-1">Completed in {translationInfo.translationTime}</p> */}
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-2 border-t border-gray-100">
                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
-                    High Accuracy
+                    Successful
                   </Badge>
                 </div>
               </CardContent>
@@ -821,10 +851,10 @@ export default function TranslatePage() {
                       <Maximize2 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                       {isFullscreen ? "Exit" : "Fullscreen"}
                     </Button>
-                    <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50 text-xs md:text-sm h-9">
+                    {/* <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50 text-xs md:text-sm h-9">
                       <Edit3 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                       Edit
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </CardHeader>
