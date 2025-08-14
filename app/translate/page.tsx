@@ -25,6 +25,7 @@ import {
   Maximize2,
   Menu,
   X,
+  Lock,
 } from "lucide-react"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
 import html2canvas from "html2canvas" 
@@ -289,26 +290,60 @@ export default function TranslatePage() {
 
    if (!isSignedIn) {
     return (
-       <div className="min-h-screen bg-gray-50">
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto text-center p-8">
-          <div
-            className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
-            style={{ backgroundColor: "#e74f4f" }}
-          >
-          </div>
-          <h2 className="text-2xl font-bold mb-4" style={{ color: "#4B4B4B" }}>
-            Sign In Required
-          </h2>
-          <p className="text-gray-600 mb-6">Please sign in to access the document translation feature.</p>
-          <Link href="/">
-            <Button className="text-white hover:opacity-90" style={{ backgroundColor: "#e74f4f" }}>
-              Go to Home Page
-            </Button>
-          </Link>
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
+          <Card className="max-w-lg mx-auto text-center shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+            <CardContent className="p-8 md:p-12">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-[#0076D6] to-[#005bb5] rounded-full flex items-center justify-center shadow-lg">
+                  <Lock className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              {/* Content */}
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Sign In Required</h2>
+              <p className="text-gray-600 mb-2 leading-relaxed text-base md:text-lg">
+                Access our powerful document translation tools
+              </p>
+              <p className="text-sm text-gray-500 mb-8">
+                Sign in to translate documents into Bahasa Melayu, Mandarin, Hindi, and Tamil
+              </p>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <SignInButton mode="modal">
+                  <Button className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white h-12 text-base font-medium transition-all duration-200 shadow-md hover:shadow-lg group">
+                    Sign In to Continue
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </SignInButton>
+
+                <div className="flex items-center my-4">
+                  <div className="flex-1 border-t border-gray-200"></div>
+                  <span className="px-3 text-sm text-gray-500">or</span>
+                  <div className="flex-1 border-t border-gray-200"></div>
+                </div>
+
+                <Link href="/" className="block">
+                  <Button
+                    variant="outline"
+                    className="w-full text-[#0076D6] border-[#0076D6] hover:bg-[#0076D6] hover:text-white h-11 text-base transition-all duration-200 bg-transparent"
+                  >
+                    Go to Home Page
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Additional Info */}
+              <div className="mt-8 pt-6 border-t border-gray-100">
+                <p className="text-xs text-gray-500">
+                  New to FairWork Contract?{" "}
+                  <SignUpButton mode="modal">
+                    <button className="text-[#0076D6] hover:underline font-medium">Create an account</button>
+                  </SignUpButton>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-       </div>
     )
   }
 
@@ -495,21 +530,65 @@ export default function TranslatePage() {
       </div>
       )}
     {/*loading page*/}
-      {isLoading && (
-            <div className="text-center py-20">
-              <div className="flex items-center justify-center gap-3">
-                <RefreshCw className="w-6 h-6 animate-spin" style={{ color: "#e74f4f" }} />
-                <span className="text-gray-600 font-medium text-lg">Processing Document...</span>
+    {isLoading && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-8 text-center">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#0076D6] to-[#005bb5] rounded-full flex items-center justify-center shadow-lg">
+                      <RefreshCw className="w-8 h-8 text-white animate-spin" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#FFC93C] rounded-full flex items-center justify-center shadow-md">
+                      <Languages className="w-3 h-3 text-gray-800" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900">Processing Your Document</h3>
+                    <p className="text-base md:text-lg text-gray-600 font-medium">
+                      Our AI is analyzing and translating your content...
+                    </p>
+                    <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                      This may take up to 5 minutes for as its on free hosting. Please don't close this window.
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2 mt-4">
+                    <div className="w-2 h-2 bg-[#0076D6] rounded-full animate-bounce"></div>
+                    <div
+                      className="w-2 h-2 bg-[#0076D6] rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-[#0076D6] rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                  </div>
+                </div>
               </div>
-              <p className="text-sm text-gray-500 mt-2">This may take a moment for large or complex files.</p>
-            </div>
-          )}
-          {errorMessage && (
-            <div className="text-center py-10 bg-red-50 border-l-4 border-red-400 text-red-700 p-4" role="alert">
-              <p className="font-bold">An Error Occurred</p>
-              <p>{errorMessage}</p>
-            </div>
-          )}
+            )}
+
+            {/* Error State Display */}
+            {errorMessage && (
+              <div
+                className="bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-400 rounded-lg p-6"
+                role="alert"
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0">
+                    <AlertCircle className="w-6 h-6 text-red-500" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-red-800 mb-1">Translation Error</h3>
+                    <p className="text-red-700 leading-relaxed">{errorMessage}</p>
+                    <Button
+                      onClick={() => setErrorMessage("")}
+                      variant="outline"
+                      className="mt-4 text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400 bg-transparent"
+                    >
+                      Try Again
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
 
     {/* result page */}
     {translatedHtml && (

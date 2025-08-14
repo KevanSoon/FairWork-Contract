@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Upload, Edit, Download, Smartphone, ChevronDown, Menu, X } from "lucide-react"
+import { Upload, Eye, Download, Smartphone, ChevronDown, Menu, X } from "lucide-react"
 import { useState } from "react"
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 
@@ -23,23 +23,22 @@ export default function DocumentTranslator() {
                 Online Document Translator
               </h1>
               <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 max-w-lg mx-auto lg:mx-0">
-                Make your content accessible to everyone. Translate any page into multiple languages using our online
-                document translator then print exciting offline elements for more professional results. Try it online
-                for free on FairWork Contract.
+              Translate paychecks and contracts instantly for clear, 
+              fair understanding. FairWork Contract turns scans into accurate, 
+              plain-language rights sheets in the worker’s native tongue
+              preserving layout, highlighting key terms, and cutting disputes before they happen.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-sm mx-auto lg:mx-0">
                 <Button asChild className="bg-[#0076D6] hover:bg-[#005bb5] text-white px-6 md:px-8 py-3 h-12 text-base">
                   <a href="/translate">Upload your file</a>
                 </Button>
-                <Button variant="outline" className="px-6 md:px-8 py-3 h-12 bg-transparent text-base">
-                  Start a design
-                </Button>
+                
               </div>
             </div>
             <div className="lg:w-1/2 flex justify-center mt-8 lg:mt-0">
               <div className="relative w-full max-w-md lg:max-w-none">
                 <img
-                  src="/document-translation-interface-mockup.png"
+                  src="/doc_trans1.jpg"
                   alt="Document translator interface"
                   className="rounded-lg shadow-lg w-full h-auto"
                 />
@@ -61,7 +60,7 @@ export default function DocumentTranslator() {
                 <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
                   <Upload className="w-6 h-6 md:w-8 md:h-8 text-[#0076D6]" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Upload your file</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">View your translated document</h3>
                 <p className="text-gray-600 text-sm md:text-base">
                   Select the "Upload your file" button or easily drag and drop your files into the section.
                 </p>
@@ -71,11 +70,11 @@ export default function DocumentTranslator() {
             <Card className="text-center p-4 md:p-6">
               <CardContent className="pt-4 md:pt-6">
                 <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                  <Edit className="w-6 h-6 md:w-8 md:h-8 text-[#0076D6]" />
+                  <Eye  className="w-6 h-6 md:w-8 md:h-8 text-[#0076D6]" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Edit your document</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">View your translated document</h3>
                 <p className="text-gray-600 text-sm md:text-base">
-                  Translate pages or select text from a page using the Translate app in our online editor.
+                Preview the translated pages or check specific sections directly in our online viewer to ensure everything looks accurate before downloading.
                 </p>
               </CardContent>
             </Card>
@@ -95,39 +94,13 @@ export default function DocumentTranslator() {
         </div>
       </section>
 
-      {/* Connect to global audience */}
-      <section className="py-12 md:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
-            <div className="lg:w-1/2 order-2 lg:order-1">
-              <img
-                src="/global-team-collaboration.png"
-                alt="Global collaboration"
-                className="rounded-lg shadow-lg w-full h-auto"
-              />
-            </div>
-            <div className="lg:w-1/2 order-1 lg:order-2 text-center lg:text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
-                Connect to a global audience
-              </h2>
-              <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
-                Expand your reach without breaking a sweat. Translate your content into multiple languages and connect
-                with people from all over the world. Our built-in AI-powered document translator app can instantly
-                convert your text into 134 languages. Auto-translate to English, French, German, and more to keep your
-                teams in the loop, grow or recruit, and have your documents ready for a global audience.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* All translation work in one place */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
             <div className="lg:w-1/2">
               <img
-                src="/document-translation-workspace.png"
+                src="/doc_save.jpg"
                 alt="Translation workspace"
                 className="rounded-lg shadow-lg w-full h-auto"
               />
@@ -137,43 +110,11 @@ export default function DocumentTranslator() {
                 All your translation work in one place
               </h2>
               <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
-                Teaching or collaborating with a new language? Turn language barriers into learning opportunities when
-                you translate texts materials into your students' native language. Try it once for free on FairWork
-                Contract. Streamline your document translation process and convert articles and reports—without having
-                to switch between different apps. With our document translator, you can communicate with confidence.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Make content compelling */}
-      <section className="py-12 md:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
-            <div className="lg:w-1/2 order-2 lg:order-1">
-              <div className="relative flex justify-center">
-                <div className="w-48 h-72 md:w-64 md:h-96 relative">
-                  <Smartphone className="w-full h-full" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/mobile-app-interface.png"
-                      alt="Mobile interface"
-                      className="rounded-lg max-w-[80%] h-auto"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="lg:w-1/2 order-1 lg:order-2 text-center lg:text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
-                Make your translated content more compelling
-              </h2>
-              <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
-                Breathe life into your translated documents with the help of visuals. Use FairWork Contract's document
-                translator once for free, then sign up for FairWork Contract Pro to access our premium stock library.
-                Browse through millions of photos, graphics, videos, audio, and GIFs. Make your content with compelling
-                images and design elements from our library. Recreate existing logos, publish documents in a flash.
+              Translate contracts, pay slips, and key documents instantly — 
+              all within FairWork Contract. No switching between apps, no 
+              formatting headaches. Just upload, translate, and view clear, 
+              plain-language versions that preserve layout and highlight 
+              important terms.
               </p>
             </div>
           </div>
@@ -186,7 +127,7 @@ export default function DocumentTranslator() {
           <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
             <div className="lg:w-1/2">
               <img
-                src="/document-editor-translation.png"
+                src="/trans_com.jpg"
                 alt="Document editor"
                 className="rounded-lg shadow-lg w-full h-auto"
               />
@@ -201,7 +142,7 @@ export default function DocumentTranslator() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base">Open FairWork Contract</h3>
                     <p className="text-gray-600 text-sm md:text-base">
-                      Launch FairWork Contract to access our document translator online.
+                    Access our online translator to start converting documents instantly.
                     </p>
                   </div>
                 </div>
@@ -212,7 +153,7 @@ export default function DocumentTranslator() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base">Upload your document</h3>
                     <p className="text-gray-600 text-sm md:text-base">
-                      Select and upload the document you want to translate.
+                    Select and upload contracts, pay slips, or other files you need translated.
                     </p>
                   </div>
                 </div>
@@ -223,7 +164,7 @@ export default function DocumentTranslator() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base">Translate your document</h3>
                     <p className="text-gray-600 text-sm md:text-base">
-                      Use our AI-powered translator to convert your content.
+                    Let our AI preserve layout and highlight key terms while translating into the worker’s native language.
                     </p>
                   </div>
                 </div>
@@ -232,8 +173,8 @@ export default function DocumentTranslator() {
                     4
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base">Make further edits</h3>
-                    <p className="text-gray-600 text-sm md:text-base">Fine-tune your translated document as needed.</p>
+                    <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base"> Review your document</h3>
+                    <p className="text-gray-600 text-sm md:text-base">Check the translation and ensure accuracy.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 md:gap-4 text-left">
@@ -243,7 +184,7 @@ export default function DocumentTranslator() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1 text-sm md:text-base">Download and share</h3>
                     <p className="text-gray-600 text-sm md:text-base">
-                      Export your translated document and share it with others.
+                    Export as a high-quality file and share with workers or agencies.
                     </p>
                   </div>
                 </div>

@@ -5,29 +5,37 @@ import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { useState } from "react"
-
+import { usePathname } from "next/navigation"
 
 export function Navbar() {
 const { isSignedIn } = useUser()
 const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+const pathname = usePathname()
+
+  const getLinkClass = (path: string) => {
+    return pathname === path ? "text-[#0076D6] font-medium" : "text-gray-700 hover:text-gray-900"
+  }
 
   return (
      <nav className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <div className="flex items-center space-x-4 md:space-x-8">
-              <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" />
+              <a href="/" className="cursor-pointer">
+              <img src="/fairwork-logo-new.png" alt="FairWork Contract" className="h-20 md:h-32" href="/"/>
+              </a>
               <nav className="hidden md:flex space-x-6">
-                <a href="/" className="text-[#0076D6] font-medium">
+                <a href="/" className={getLinkClass("/")}>
                   Home
                 </a>
                 {isSignedIn && (
-                <a href="/translate" className="text-gray-700 hover:text-gray-900">
+                <a href="/translate" className={getLinkClass("/translate")}>
                   Translate
                 </a>
                 )}
                 {isSignedIn && (
-                <a href="/documents" className="text-gray-700 hover:text-gray-900">
+                <a href="/documents" className={getLinkClass("/documents")}>
                   Documents
                 </a>
                 )}
@@ -73,7 +81,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
               <nav className="flex flex-col space-y-4">
                 <a
                   href="/"
-                  className="text-[#0076D6] font-medium px-4 py-2 text-base"
+                  className={`${getLinkClass("/")} px-4 py-2 text-base`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Home
@@ -81,7 +89,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
                 {isSignedIn && (
                 <a
                   href="/translate"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
+                  className={`${getLinkClass("/translate")} px-4 py-2 text-base`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Translate
@@ -90,7 +98,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
                  {isSignedIn && (
                 <a
                   href="/documents"
-                  className="text-gray-700 hover:text-gray-900 px-4 py-2 text-base"
+                  className={`${getLinkClass("/documents")} px-4 py-2 text-base`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Documents
