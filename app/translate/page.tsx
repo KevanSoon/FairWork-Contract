@@ -362,7 +362,7 @@ export default function TranslatePage() {
         </div>
 
         {/* Main Upload Card */}
-        <Card className="shadow-lg border-0 bg-white">
+        <Card className="shadow-lg border-0 bg-white mb-12">
           <CardHeader className="pb-6">
             <CardTitle className="flex items-center gap-3 text-xl md:text-2xl text-gray-900">
               <div className="w-8 h-8 bg-[#0076D6] rounded-lg flex items-center justify-center">
@@ -485,6 +485,127 @@ export default function TranslatePage() {
           </CardContent>
         </Card>
 
+        {/* Sample Documents Section */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Or Try Sample Documents</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Don't have a document ready? Test our translation capabilities with these samples
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
+              <CardContent className="p-6">
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
+                    <FileText className="w-8 h-8 text-[#0076D6]" />
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Commercial Invoice</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Professional invoice with itemized services and billing details
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">PNG</span>
+                      <span>•</span>
+                      <span>0.8 MB</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      const link = document.createElement("a")
+                      link.href = "/invoice.png"
+                      link.download = "sample-invoice.png"
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                    }}
+                    className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white transition-colors"
+                  >
+                    Download Sample
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
+              <CardContent className="p-6">
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
+                    <FileText className="w-8 h-8 text-green-600" />
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Service Contract</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Comprehensive legal agreement with terms, payment, and confidentiality clauses
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">PDF</span>
+                      <span>•</span>
+                      <span>2.1 MB</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      const link = document.createElement("a")
+                      link.href = "/Contract.pdf"
+                      link.download = "sample-contract.pdf"
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                    }}
+                    className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white transition-colors"
+                  >
+                    Download Sample
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
+              <CardContent className="p-6">
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
+                    <FileText className="w-8 h-8 text-orange-600" />
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Employee Payslip</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Monthly salary statement with earnings, deductions, and net pay details
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">PDF</span>
+                      <span>•</span>
+                      <span>0.5 MB</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      const link = document.createElement("a")
+                      link.href = "/Payslip.pdf"
+                      link.download = "sample-payslip.pdf"
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                    }}
+                    className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white transition-colors"
+                  >
+                    Download Sample
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+
         {/* Features Section */}
         <div className="mt-16 md:mt-20">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 md:mb-12 text-center">
@@ -548,7 +669,7 @@ export default function TranslatePage() {
                       Our AI is analyzing and translating your content...
                     </p>
                     <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
-                      This may take up to 5 minutes for as its on free hosting. Please don't close this window.
+                      This may take up to 5 minutes as its on free hosting. Please don't close this window.
                     </p>
                   </div>
                   <div className="flex items-center space-x-2 mt-4">
