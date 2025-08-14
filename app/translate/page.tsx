@@ -48,6 +48,13 @@ export default function TranslatePage() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { getToken } = useAuth()
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null)
+  const [contractAnalysisLoading, setContractAnalysisLoading] = useState(false)
+  const [contractAnalysis, setContractAnalysis] = useState<{
+    language: string
+    extracted_data: Record<string, { text: string; summary: string }>
+    summary_sheet_html: string
+    debug_visualization_html: string
+  } | null>(null)
 
   //from translate/results
   const [copied, setCopied] = useState(false)
@@ -139,7 +146,7 @@ export default function TranslatePage() {
       }
       const htmlContent = await response.text()
       setTranslatedHtml(htmlContent)
-      // handleContractAnalyze(htmlContent)
+      handleContractAnalyze(htmlContent)
       
     } catch (error) {
       console.error("Error translating document:", error)
@@ -220,6 +227,41 @@ export default function TranslatePage() {
   }, [uploadedFile])
 
 
+ const handleContractAnalyze = async (htmlContent: string) => {
+  try {
+    setContractAnalysisLoading(true)
+    setContractAnalysis(null)
+
+    const htmlBlob = new Blob([htmlContent], { type: "text/html" })
+    const htmlFile = new File([htmlBlob], "contract.html", { type: "text/html" })
+
+    const formData = new FormData()
+    formData.append("file", htmlFile)
+
+    const response = await fetch("https://kevansoon-backend.hf.space/api/analyze_contract", {
+      method: "POST",
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.detail || "Contract analysis failed.")
+    }
+
+    const result = await response.json()
+
+    // Store full result in state (so you can still use other data later)
+    setContractAnalysis(result)
+
+  } catch (error) {
+    console.error("Contract analysis error:", error)
+    setContractAnalysis(null)
+  } finally {
+    setContractAnalysisLoading(false)
+  }
+}
+
+
   //end of integrated functions
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -243,27 +285,6 @@ export default function TranslatePage() {
   }
 
   const canTranslate = uploadedFile && targetLanguage
-
-
-   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!iframeRef.current) return;
-      const iframeDoc = iframeRef.current.contentDocument || iframeRef.current.contentWindow?.document;
-      if (!iframeDoc) return;
-
-      const input = iframeDoc.querySelector<HTMLInputElement>("input");
-      if (input) {
-        input.focus();
-        // Insert the typed key
-        if (e.key.length === 1) input.value += e.key;
-        // Handle backspace
-        if (e.key === "Backspace") input.value = input.value.slice(0, -1);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
 
    if (!isSignedIn) {
@@ -754,7 +775,7 @@ export default function TranslatePage() {
             </Card>
 
             {/* Document Summary Card */}
-            <Card className="shadow-sm hover:shadow-md transition-shadow">
+            {/* <Card className="shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-3 md:pb-4">
                 <CardTitle className="text-base md:text-lg font-semibold text-gray-900">Document Summary</CardTitle>
               </CardHeader>
@@ -804,7 +825,114 @@ export default function TranslatePage() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
+
+      {/* Document Summary     */}
+      <Card className="shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="pb-3 md:pb-4">
+          <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
+            Document Summary
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          {contractAnalysisLoading ? (
+            <p className="text-sm text-gray-500">Analyzing contract...</p>
+          ) : contractAnalysis?.summary_sheet_html ? (
+            <iframe
+              src={URL.createObjectURL(
+                new Blob(
+                  [
+                    `
+                    <html>
+                      <head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>
+                          body {
+                            margin: 0;
+                            padding: 1rem;
+                            font-family: sans-serif;
+                            max-width: 100%;
+                          }
+                          img, table {
+                            max-width: 100%;
+                            height: auto;
+                          }
+                          * {
+                            box-sizing: border-box;
+                          }
+                        </style>
+                      </head>
+                      <body>
+                        ${contractAnalysis.summary_sheet_html}
+                      </body>
+                    </html>
+                    `
+                  ],
+                  { type: "text/html" }
+                )
+              )}
+              className="w-full h-96 rounded border"
+            />
+          ) : (
+            <p className="text-sm text-gray-500">Upload a document to see the summary.</p>
+          )}
+        </CardContent>
+      </Card>
+
+        {/* Debug Visualization Card */}
+        <Card className="shadow-sm hover:shadow-md transition-shadow mt-6">
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
+              Document Summmary Visualization
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            {contractAnalysisLoading ? (
+              <p className="text-sm text-gray-500">Generating visualization...</p>
+            ) : contractAnalysis?.debug_visualization_html ? (
+              <iframe
+                src={URL.createObjectURL(
+                  new Blob(
+                    [
+                      `
+                      <html>
+                        <head>
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <style>
+                            body {
+                              margin: 0;
+                              padding: 1rem;
+                              font-family: sans-serif;
+                              max-width: 100%;
+                            }
+                            img, table {
+                              max-width: 100%;
+                              height: auto;
+                            }
+                            * {
+                              box-sizing: border-box;
+                            }
+                          </style>
+                        </head>
+                        <body>
+                          ${contractAnalysis.debug_visualization_html}
+                        </body>
+                      </html>
+                      `
+                    ],
+                    { type: "text/html" }
+                  )
+                )}
+                className="w-full h-96 rounded border"
+              />
+            ) : (
+              <p className="text-sm text-gray-500">No visualization available.</p>
+            )}
+          </CardContent>
+        </Card>
+
 
             <div className="space-y-3">
               <Button
