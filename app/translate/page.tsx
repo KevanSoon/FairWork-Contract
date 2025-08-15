@@ -29,7 +29,8 @@ import {
   AlertCircle
 } from "lucide-react"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
-import html2canvas from "html2canvas" 
+import html2canvas from "html2canvas"
+import ComparisonPanel from "../ComparisonPanel"
 
 export default function TranslatePage() {
 
@@ -58,9 +59,14 @@ export default function TranslatePage() {
     debug_visualization_html: string
   } | null>(null)
 
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const openPanel = () => setIsPanelOpen(true);
+  const closePanel = () => setIsPanelOpen(false);
+
   //from translate/results
   const [copied, setCopied] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+
   
   //end of integrated usestates
 
@@ -847,6 +853,7 @@ export default function TranslatePage() {
             </Card> */}
 
       {/* Document Summary     */}
+     <>
       <Card className="shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="pb-3 md:pb-4">
           <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
@@ -854,7 +861,7 @@ export default function TranslatePage() {
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="space-y-4">
           {contractAnalysisLoading ? (
             <p className="text-sm text-gray-500">Analyzing contract...</p>
           ) : contractAnalysis?.summary_sheet_html ? (
@@ -867,19 +874,9 @@ export default function TranslatePage() {
                       <head>
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <style>
-                          body {
-                            margin: 0;
-                            padding: 1rem;
-                            font-family: sans-serif;
-                            max-width: 100%;
-                          }
-                          img, table {
-                            max-width: 100%;
-                            height: auto;
-                          }
-                          * {
-                            box-sizing: border-box;
-                          }
+                          body { margin: 0; padding: 1rem; font-family: sans-serif; max-width: 100%; }
+                          img, table { max-width: 100%; height: auto; }
+                          * { box-sizing: border-box; }
                         </style>
                       </head>
                       <body>
@@ -896,11 +893,31 @@ export default function TranslatePage() {
           ) : (
             <p className="text-sm text-gray-500">Upload a document to see the summary.</p>
           )}
+
+          {/* Button only shows after loading is finished */}
+          {!contractAnalysisLoading && (
+            <button
+              onClick={openPanel}
+              className="bg-[#0076D6] text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-[#005bb5]  focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out transform hover:scale-105"
+            >
+              Click Here for Detailed Summary
+            </button>
+          )}
         </CardContent>
       </Card>
 
+      {/* Panel — safe optional chaining */}
+      {isPanelOpen && (
+        <ComparisonPanel
+          html1={contractAnalysis?.summary_sheet_html || ""}
+          html2={contractAnalysis?.debug_visualization_html || ""}
+          onClose={closePanel}
+        />
+      )}
+    </>
+
         {/* Debug Visualization Card */}
-        <Card className="shadow-sm hover:shadow-md transition-shadow mt-6">
+        {/* <Card className="shadow-sm hover:shadow-md transition-shadow mt-6">
           <CardHeader className="pb-3 md:pb-4">
             <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
               Document Summmary Visualization
@@ -950,7 +967,7 @@ export default function TranslatePage() {
               <p className="text-sm text-gray-500">No visualization available.</p>
             )}
           </CardContent>
-        </Card>
+        </Card> */}
 
 
             <div className="space-y-3">
