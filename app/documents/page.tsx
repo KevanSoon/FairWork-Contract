@@ -3,9 +3,16 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Download, Eye, Calendar, Globe, X, Menu } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
 import { PDFDocument } from "pdf-lib"
+import {
+  Download,
+  ArrowRight,
+  X,
+  Lock,
+  Eye
+} from "lucide-react"
 
 export default function DocumentsPage() {
   const [selectedDocument, setSelectedDocument] = useState<any>(null)
@@ -207,34 +214,64 @@ export default function DocumentsPage() {
 
   //end of integrated functions
 
-  if (!isSignedIn) {
+ if (!isSignedIn) {
     return (
-       <div className="min-h-screen bg-gray-50">
-         
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto text-center p-8">
-          <div
-            className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
-            style={{ backgroundColor: "#e74f4f" }}
-          >
-            
-          </div>
-          <h2 className="text-2xl font-bold mb-4" style={{ color: "#4B4B4B" }}>
-            Sign In Required
-          </h2>
-          <p className="text-gray-600 mb-6">Please sign in to access the document translation feature.</p>
-          <Link href="/">
-            <Button className="text-white hover:opacity-90" style={{ backgroundColor: "#e74f4f" }}>
-              Go to Home Page
-            </Button>
-          </Link>
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
+          <Card className="max-w-lg mx-auto text-center shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+            <CardContent className="p-8 md:p-12">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-[#0076D6] to-[#005bb5] rounded-full flex items-center justify-center shadow-lg">
+                  <Lock className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              {/* Content */}
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Sign In Required</h2>
+              <p className="text-gray-600 mb-2 leading-relaxed text-base md:text-lg">
+                Access our powerful document translation tools
+              </p>
+              <p className="text-sm text-gray-500 mb-8">
+                Sign in to translate documents into Bahasa Melayu, Mandarin, Hindi, and Tamil
+              </p>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <SignInButton mode="modal">
+                  <Button className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white h-12 text-base font-medium transition-all duration-200 shadow-md hover:shadow-lg group">
+                    Sign In to Continue
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </SignInButton>
+
+                <div className="flex items-center my-4">
+                  <div className="flex-1 border-t border-gray-200"></div>
+                  <span className="px-3 text-sm text-gray-500">or</span>
+                  <div className="flex-1 border-t border-gray-200"></div>
+                </div>
+
+                <Link href="/" className="block">
+                  <Button
+                    variant="outline"
+                    className="w-full text-[#0076D6] border-[#0076D6] hover:bg-[#0076D6] hover:text-white h-11 text-base transition-all duration-200 bg-transparent"
+                  >
+                    Go to Home Page
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Additional Info */}
+              <div className="mt-8 pt-6 border-t border-gray-100">
+                <p className="text-xs text-gray-500">
+                  New to FairWork Contract?{" "}
+                  <SignUpButton mode="modal">
+                    <button className="text-[#0076D6] hover:underline font-medium">Create an account</button>
+                  </SignUpButton>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-       </div>
-     
     )
   }
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
