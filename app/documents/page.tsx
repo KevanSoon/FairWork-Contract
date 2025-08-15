@@ -332,19 +332,19 @@ if (loading) {
 
 return (
   <div className="min-h-screen bg-gray-50">
-        <div className="fixed top-4 right-4 md:top-6 md:right-6 z-50">
-      <select
-        value={locale}
-        onChange={(e) => toggleLocale(e.target.value as Locale)}
-        className="appearance-none bg-white border border-gray-300 text-gray-900 px-4 py-2 rounded shadow-md cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
-      >
-        <option value="en">English</option>
-        <option value="zh">中文</option>
-        <option value="ms">Malay</option>
-        <option value="ta">Tamil</option>
-        <option value="hi">Hindi</option>
-      </select>
-    </div>
+   <div className="fixed top-16 md:top-6 right-4 md:right-6 z-50">
+  <select
+    value={locale}
+    onChange={(e) => toggleLocale(e.target.value as Locale)}
+    className="appearance-none bg-white border border-gray-300 text-gray-900 px-4 py-2 rounded shadow-md cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+  >
+    <option value="en">English</option>
+    <option value="zh">中文</option>
+    <option value="ms">Malay</option>
+    <option value="ta">Tamil</option>
+    <option value="hi">Hindi</option>
+  </select>
+</div>
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
       <div className="mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{t("my_documents_title")}</h1>
