@@ -27,5 +27,24 @@
   "faq_cookies": "But first, cookies 🍪",
   "faq_cookies_desc": "We use essential cookies to make our site work. We'd like to use other cookies to improve and personalize your visit, and to show you relevant FairWork Contract ads on other sites. You can choose to Accept all or Manage cookies to learn about your choices. Learn more in our cookie policy.",
   "accept_cookies": "Accept all cookies",
-  "manage_cookies": "Manage cookies"
+  "manage_cookies": "Manage cookies",
+
+  "sign_in_required_title": "Sign In Required",
+  "sign_in_required_desc": "Access our powerful document translation tools",
+  "sign_in_required_info": "Sign in to translate documents into Bahasa Melayu, Mandarin, Hindi, and Tamil",
+  "sign_in_button": "Sign In to Continue",
+  "or": "or",
+  "go_home_button": "Go to Home Page",
+  "new_user_info": "New to FairWork Contract?",
+  "create_account": "Create an account",
+  "loading_documents": "Loading Your Documents",
+  "loading_documents_desc": "We're gathering all your translated documents and preparing them for you.",
+  "loading_step_1": "✓ Checking document status",
+  "loading_step_2": "✓ Preparing previews",
+  "loading_step_3": "✓ Loading translations",
+  "my_documents_title": "My Documents",
+  "my_documents_desc": "View and manage all your translated documents",
+  "completed": "Completed",
+  "preview": "Preview",
+  "download_as": "Download as"
 }

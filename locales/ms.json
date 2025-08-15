@@ -27,5 +27,24 @@
   "faq_cookies": "Pertama, Cookies 🍪",
   "faq_cookies_desc": "Kami menggunakan cookies penting untuk memastikan tapak web berfungsi. Kami ingin menggunakan cookies lain untuk meningkatkan pengalaman anda. Anda boleh memilih 'Terima Semua' atau 'Urus Cookies'. Lihat dasar cookies kami.",
   "accept_cookies": "Terima Semua",
-  "manage_cookies": "Urus Cookies"
+  "manage_cookies": "Urus Cookies",
+ 
+  "sign_in_required_title": "Log Masuk Diperlukan",
+  "sign_in_required_desc": "Akses alat terjemahan dokumen yang berkuasa kami",
+  "sign_in_required_info": "Log masuk untuk menterjemah dokumen ke Bahasa Melayu, Mandarin, Hindi, dan Tamil",
+  "sign_in_button": "Log Masuk Untuk Teruskan",
+  "or": "atau",
+  "go_home_button": "Pergi ke Halaman Utama",
+  "new_user_info": "Baru ke FairWork Contract?",
+  "create_account": "Cipta akaun",
+  "loading_documents": "Memuat Dokumen Anda",
+  "loading_documents_desc": "Kami sedang mengumpulkan semua dokumen diterjemah dan menyiapkannya untuk anda.",
+  "loading_step_1": "✓ Memeriksa status dokumen",
+  "loading_step_2": "✓ Menyediakan pratonton",
+  "loading_step_3": "✓ Memuat terjemahan",
+  "my_documents_title": "Dokumen Saya",
+  "my_documents_desc": "Lihat dan urus semua dokumen diterjemah anda",
+  "completed": "Selesai",
+  "preview": "Pratonton",
+  "download_as": "Muat Turun Sebagai"
 }

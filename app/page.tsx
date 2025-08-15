@@ -18,19 +18,19 @@ export default function DocumentTranslator() {
       {/* Hero Section */}
      <section className="relative bg-gradient-to-br from-blue-50 to-blue-50 py-8 md:py-16">
   {/* Language Dropdown */}
-  <div className="absolute top-4 right-4 md:top-6 md:right-6">
-    <select
-      value={locale}
-      onChange={(e) => toggleLocale(e.target.value as Locale)}
-      className="appearance-none bg-white border border-gray-300 text-gray-900 px-4 py-2 rounded shadow-md cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
-    >
-      <option value="en">English</option>
-      <option value="zh">中文</option>
-      <option value="ms">Malay</option>
-      <option value="ta">Tamil</option>
-      <option value="hi">Hindi</option>
-    </select>
-  </div>
+  <div className="fixed top-4 right-4 md:top-6 md:right-6 z-50">
+      <select
+        value={locale}
+        onChange={(e) => toggleLocale(e.target.value as Locale)}
+        className="appearance-none bg-white border border-gray-300 text-gray-900 px-4 py-2 rounded shadow-md cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+      >
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="ms">Malay</option>
+        <option value="ta">Tamil</option>
+        <option value="hi">Hindi</option>
+      </select>
+    </div>
 
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between">
     <div className="lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">

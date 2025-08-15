@@ -27,5 +27,24 @@
   "faq_cookies": "首先是 Cookies 🍪",
   "faq_cookies_desc": "我们使用必要的 cookies 以保证网站正常运行。我们希望使用其他 cookies 来优化您的访问体验，并在其他网站展示相关 FairWork Contract 广告。您可以选择“全部接受”或“管理 cookies”。了解更多，请查看我们的 cookie 政策。",
   "accept_cookies": "全部接受",
-  "manage_cookies": "管理 cookies"
+  "manage_cookies": "管理 cookies",
+
+  "sign_in_required_title": "需要登录",
+  "sign_in_required_desc": "访问我们强大的文档翻译工具",
+  "sign_in_required_info": "登录以将文档翻译为马来语、中文、印地语和泰米尔语",
+  "sign_in_button": "登录以继续",
+  "or": "或",
+  "go_home_button": "返回主页",
+  "new_user_info": "首次使用 FairWork Contract？",
+  "create_account": "创建账户",
+  "loading_documents": "正在加载您的文档",
+  "loading_documents_desc": "我们正在收集所有已翻译的文档并为您准备。",
+  "loading_step_1": "✓ 检查文档状态",
+  "loading_step_2": "✓ 准备预览",
+  "loading_step_3": "✓ 加载翻译",
+  "my_documents_title": "我的文档",
+  "my_documents_desc": "查看并管理所有已翻译的文档",
+  "completed": "已完成",
+  "preview": "预览",
+  "download_as": "下载为"
 }
