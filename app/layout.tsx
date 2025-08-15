@@ -7,7 +7,7 @@ import { LocaleProvider } from "./LocaleContext";
 import LocaleWrapper from "./LocaleWrapper";
 
 export const metadata: Metadata = {
-  title: "v0 App",
+  title: "FairWork Contract",
   description: "Created with v0",
   generator: "v0.app",
 };

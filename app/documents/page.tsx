@@ -400,26 +400,29 @@ export default function DocumentsPage() {
 
       {/* Preview Modal */}
       {selectedDocument && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
-              <h3 className="text-base md:text-lg font-semibold text-gray-900 truncate pr-4">
-                {selectedDocument.name}
-              </h3>
-              <button
-                onClick={() => setSelectedDocument(null)}
-                className="text-gray-400 hover:text-gray-600 flex-shrink-0"
-              >
-                <X className="h-5 w-5 md:h-6 md:w-6" />
-              </button>
-            </div>
-            <div className="p-4 md:p-6">
-              <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
-                <iframe src={selectedDocument.signed_url} className="w-full h-full" title={selectedDocument.name} />
-              </div>
-            </div>
-          </div>
+     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-2xl max-w-[95vw] max-h-[95vh] w-full h-full flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+          <h3 className="text-lg font-semibold text-gray-900 truncate pr-4">{selectedDocument.name}</h3>
+          <button
+            onClick={() => setSelectedDocument(null)}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
         </div>
+
+        <div className="flex-1 overflow-auto bg-gray-50 flex items-center justify-center p-4">
+          <img
+            src={selectedDocument.signed_url || "/placeholder.svg"}
+            alt={selectedDocument.name}
+            className="max-w-full max-h-full object-contain shadow-lg"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
       )}
     </div>
   )
