@@ -18,7 +18,13 @@ export default function DocumentTranslator() {
       {/* Hero Section */}
      <section className="relative bg-gradient-to-br from-blue-50 to-blue-50 py-8 md:py-16">
   {/* Language Dropdown */}
- <div className="fixed top-16 md:top-6 right-4 md:right-6 z-50">
+  <div className="fixed 
+  top-16        /* mobile phones */
+  md:top-20     /* iPad / tablets */
+  lg:top-6      /* desktop */
+  right-4 md:right-6 
+  z-50"
+>
   <select
     value={locale}
     onChange={(e) => toggleLocale(e.target.value as Locale)}
