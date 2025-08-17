@@ -852,7 +852,7 @@ export default function TranslatePage() {
     </Card>
 
       {/* Document Summary     */}
-    <>
+<>
   <Card className="shadow-sm hover:shadow-md transition-shadow">
     <CardHeader className="pb-3 md:pb-4">
       <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
@@ -863,34 +863,8 @@ export default function TranslatePage() {
     <CardContent className="space-y-4">
       {contractAnalysisLoading ? (
         <p className="text-sm text-gray-500">{t("document_summary_loading")}</p>
-      ) : contractAnalysis?.summary_sheet_html ? (
-        <iframe
-          src={URL.createObjectURL(
-            new Blob(
-              [
-                `
-                <html>
-                  <head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <style>
-                      body { margin: 0; padding: 1rem; font-family: sans-serif; max-width: 100%; }
-                      img, table { max-width: 100%; height: auto; }
-                      * { box-sizing: border-box; }
-                    </style>
-                  </head>
-                  <body>
-                    ${contractAnalysis.summary_sheet_html}
-                  </body>
-                </html>
-                `
-              ],
-              { type: "text/html" }
-            )
-          )}
-          className="w-full h-96 rounded border"
-        />
       ) : (
-        <p className="text-sm text-gray-500">{t("document_summary_empty")}</p>
+        <p className="text-sm text-gray-500">{t("document_summary_ready")}</p>
       )}
 
       {/* Button only shows after loading is finished */}
