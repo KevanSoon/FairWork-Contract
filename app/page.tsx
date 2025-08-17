@@ -52,7 +52,7 @@ export default function DocumentTranslator() {
     </div>
     <div className="lg:w-1/2 flex justify-center mt-8 lg:mt-0">
       <img
-        src="/doc_trans1.jpg"
+        src="/img_1.png"
         alt="Document translator interface"
         className="rounded-lg shadow-lg w-full h-auto"
       />
@@ -107,7 +107,7 @@ export default function DocumentTranslator() {
       {/* Workspace Section */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-8 md:gap-12">
-          <img src="/doc_save.jpg" alt="Translation workspace" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
+          <img src="/img_2.png" alt="Translation workspace" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
           <div className="lg:w-1/2 text-center lg:text-left">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">{t("workspace_title")}</h2>
             <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">{t("workspace_desc")}</p>
@@ -119,7 +119,7 @@ export default function DocumentTranslator() {
       <section className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
-            <img src="/trans_com.jpg" alt="Document editor" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
+            <img src="/img_3.jpg" alt="Document editor" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
             <div className="lg:w-1/2 text-center lg:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8">{t("how_to_translate")}</h2>
               <div className="space-y-4 md:space-y-6">

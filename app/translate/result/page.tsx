@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -37,13 +37,45 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isSignedIn } = useUser()
 
-  const translationInfo = {
+  const [translationInfo, setTranslationInfo] = useState({
     originalLanguage: "English (Auto-detected)",
     targetLanguage: "Bahasa Melayu",
     fileName: "business-proposal.pdf",
     wordCount: 1247,
     translationTime: "2.3s",
-  }
+  })
+
+  useEffect(() => {
+    try {
+      const storedData = sessionStorage.getItem("translationData")
+      if (storedData) {
+        const translationData = JSON.parse(storedData)
+
+        const languageMap: Record<string, string> = {
+          ms: "Bahasa Melayu",
+          zh: "Mandarin",
+          hi: "Hindi",
+          ta: "Tamil",
+        }
+
+        const targetLanguageFullName = languageMap[translationData.targetLanguage as string] || translationData.targetLanguage
+
+        setTranslationInfo({
+          originalLanguage: "English (Auto-detected)",
+          targetLanguage: targetLanguageFullName,
+          fileName: translationData.fileName || "document.pdf",
+          wordCount: 1247,
+          translationTime: "2.3s",
+        })
+
+        if (translationData.translatedHtml) {
+          setTranslatedText(translationData.translatedHtml)
+        }
+      }
+    } catch (error) {
+      console.error("Error retrieving translation data from sessionStorage:", error)
+    }
+  }, [])
 
   const translatedDocumentUrl = "/business-proposal-bahasa-melayu.png"
 
@@ -70,7 +102,12 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
       })
     }
   }
-
+  const handleNewTranslation = () => {
+    // Clear the stored translation data
+    sessionStorage.removeItem("translationData")
+    // Navigate back to translate page for fresh start
+    window.location.href = "/translate"
+  }
 
   if (!isSignedIn) {
     return (
@@ -465,13 +502,15 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
                   Share
                 </Button>
               </div>
-
-              <Link href="/translate" className="block">
-                <Button variant="outline" className="w-full bg-white hover:bg-gray-50 h-10 text-sm">
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Translate Another
-                </Button>
-              </Link>
+              <Button
+                onClick={handleNewTranslation}
+                variant="outline"
+                className="w-full bg-white hover:bg-gray-50 h-10 text-sm border-[#0076D6] text-[#0076D6] hover:bg-[#0076D6] hover:text-white"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Start New Translation
+              </Button>
+              
             </div>
           </div>
 

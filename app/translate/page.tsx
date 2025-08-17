@@ -160,6 +160,13 @@ export default function TranslatePage() {
       setTranslatedHtml(htmlContent)
       handleContractAnalyze(htmlContent)
       
+      // Store translation data for result page
+      sessionStorage.setItem('translationData', JSON.stringify({
+        fileName: uploadedFile.name,
+        targetLanguage: targetLanguage,
+        translatedHtml: htmlContent,
+        timestamp: new Date().toISOString()
+      }))
     } catch (error) {
       console.error("Error translating document:", error)
       if (error instanceof TypeError) {
@@ -536,17 +543,17 @@ export default function TranslatePage() {
                       {t("sample_doc_invoice_desc")}
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">PNG</span>
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">JPG</span>
                       <span>•</span>
-                      <span>0.8 MB</span>
+                      <span>0.77 MB</span>
                     </div>
                   </div>
 
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/invoice.png"
-                      link.download = "sample-invoice.png"
+                      link.href = "/invoice_example.jpg"
+                      link.download = "invoice_example.jpg"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
@@ -572,17 +579,17 @@ export default function TranslatePage() {
                       {t("sample_doc_contract_desc")}
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">PDF</span>
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">PNG</span>
                       <span>•</span>
-                      <span>2.1 MB</span>
+                      <span>0.1 MB</span>
                     </div>
                   </div>
 
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/Contract.pdf"
-                      link.download = "sample-contract.pdf"
+                      link.href = "/contract_example.png"
+                      link.download = "contract_example.png"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
@@ -608,17 +615,17 @@ export default function TranslatePage() {
                       {t("sample_doc_payslip_desc")}
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">PDF</span>
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">JPG</span>
                       <span>•</span>
-                      <span>0.5 MB</span>
+                      <span>0.6 MB</span>
                     </div>
                   </div>
 
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/Payslip.pdf"
-                      link.download = "sample-payslip.pdf"
+                      link.href = "/payslip_example.jpg"
+                      link.download = "payslip_example.jpg"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
@@ -635,7 +642,7 @@ export default function TranslatePage() {
 
 
         {/* Features Section */}
-        <div className="mt-16 md:mt-20">
+        {/* <div className="mt-16 md:mt-20">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 md:mb-12 text-center">
             {t("features_section_title")}
           </h2>
@@ -676,7 +683,7 @@ export default function TranslatePage() {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </div> */}
       </div>
       )}
    {/* Loading page */}

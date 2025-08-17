@@ -356,62 +356,112 @@ return (
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{t("my_documents_title")}</h1>
         <p className="text-gray-600 text-sm md:text-base">{t("my_documents_desc")}</p>
       </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"></div>
+      {/* Documents Grid */}
+      {savedDocuments.length === 0 ? (
+      <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
+            <div className="max-w-md mx-auto">
+              {/* Empty State Icon */}
+              <div className="relative mb-6">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#0076D6] to-[#005bb5] rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </div>
+              </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-        {savedDocuments.map((doc) => (
-          <div key={doc.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="relative h-40 md:h-48 bg-gray-100">
-              <img src={doc.signed_url || "/placeholder.svg"} className="w-full h-full object-cover" />
-              <div className="absolute top-2 md:top-3 right-2 md:right-3">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800`}>
-                  {t("completed")}
-                </span>
+              {/* Content */}
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">No documents found</h3>
+              <p className="text-gray-600 mb-6 text-sm md:text-base">
+                You haven't translated any documents yet. Upload your first document to get started.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="space-y-4">
+                <Link href="/translate">
+                  <button className="w-full bg-[#0076D6] hover:bg-[#005bb5] text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Translate Document
+                  </button>
+                </Link>
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500"></span>
+                  </div>
+                </div>
+                <Link href="/">
+                  <button className="w-full text-[#0076D6] border border-[#0076D6] hover:bg-[#0076D6] hover:text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Back to Home
+                  </button>
+                </Link>
               </div>
             </div>
+          </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+          {savedDocuments.map((doc) => (
+            <div key={doc.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="relative h-40 md:h-48 bg-gray-100">
+                <img src={doc.signed_url || "/placeholder.svg"} className="w-full h-full object-cover" />
+                <div className="absolute top-2 md:top-3 right-2 md:right-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800`}>
+                    {t("completed")}
+                  </span>
+                </div>
+              </div>
 
-            <div className="p-4 md:p-6">
-              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm md:text-base">{doc.name}</h3>
-
-              <div className="space-y-3">
-                <button
-                  onClick={() => setSelectedDocument(doc)}
-                  className="w-full flex items-center justify-center px-3 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors h-10"
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  {t("preview")}
-                </button>
-
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-700 uppercase tracking-wide">{t("download_as")}</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      onClick={() => handleDownload(doc)}
-                      className="flex items-center justify-center px-2 py-2 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-red-200"
-                    >
-                      <Download className="h-3 w-3 mr-1" />
-                      PDF
-                    </button>
-                    <button
-                      onClick={() => handleSaveAsImage(doc, "jpeg")}
-                      className="flex items-center justify-center px-2 py-2 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-blue-200"
-                    >
-                      <Download className="h-3 w-3 mr-1" />
-                      JPEG
-                    </button>
-                    <button
-                      onClick={() => handleSaveAsImage(doc, "png")}
-                      className="flex items-center justify-center px-2 py-2 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-green-200"
-                    >
-                      <Download className="h-3 w-3 mr-1" />
-                      PNG
-                    </button>
+              <div className="p-4 md:p-6">
+                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm md:text-base">{doc.name}</h3>
+                {/* Action Buttons */}
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setSelectedDocument(doc)}
+                    className="w-full flex items-center justify-center px-3 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors h-10"
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    {t("preview")}
+                  </button>
+                  {/* Download Options */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-gray-700 uppercase tracking-wide">{t("download_as")}</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        onClick={() => handleDownload(doc)}
+                        className="flex items-center justify-center px-2 py-2 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-red-200"
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        PDF
+                      </button>
+                      <button
+                        onClick={() => handleSaveAsImage(doc, "jpeg")}
+                        className="flex items-center justify-center px-2 py-2 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-blue-200"
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        JPEG
+                      </button>
+                      <button
+                        onClick={() => handleSaveAsImage(doc, "png")}
+                        className="flex items-center justify-center px-2 py-2 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed h-9 border border-green-200"
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        PNG
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </main>
 
     {selectedDocument && (
