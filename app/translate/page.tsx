@@ -962,7 +962,7 @@ export default function TranslatePage() {
         {isFullscreen && (
           <div className="flex justify-between items-center p-4 md:p-6 border-b bg-white">
             <h3 className="text-base md:text-lg font-semibold text-gray-900">
-              {t("translated_document_title")} - {translationInfo.fileName}
+              {t("translated_document_title")} - {uploadedFile?.name}
             </h3>
             <Button onClick={() => setIsFullscreen(false)} variant="outline" size="sm" className="h-9">
               {t("fullscreen_exit")}
