@@ -871,7 +871,7 @@ export default function TranslatePage() {
       {contractAnalysisLoading ? (
         <p className="text-sm text-gray-500">{t("document_summary_loading")}</p>
       ) : (
-        <p className="text-sm text-gray-500">{t("document_summary_ready")}</p>
+        <p className="text-sm text-gray-500"></p>
       )}
 
       {/* Button only shows after loading is finished */}
@@ -942,7 +942,7 @@ export default function TranslatePage() {
     <CardHeader className="pb-3 md:pb-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">
-          {t("translated_document_title")}
+          {t("translated_document_title")} - {uploadedFile?.name}
         </CardTitle>
         <div className="flex gap-2 md:gap-3">
           <Button
