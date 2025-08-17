@@ -563,8 +563,8 @@ export default function TranslatePage() {
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/invoice_example.jpg"
-                      link.download = "invoice_example.jpg"
+                      link.href = "/employment_contract.png"
+                      link.download = "employment_contract.png"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
@@ -599,8 +599,8 @@ export default function TranslatePage() {
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/contract_example.png"
-                      link.download = "contract_example.png"
+                      link.href = "/offer_letter.png"
+                      link.download = "offer_letter.png"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
