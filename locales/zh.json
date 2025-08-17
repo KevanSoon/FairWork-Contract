@@ -106,5 +106,6 @@
   "translate_another_button": "翻译另一个",
   "translated_document_title": "翻译文档",
   "fullscreen_exit": "退出全屏",
-  "fullscreen_button": "全屏"
+  "fullscreen_button": "全屏",
+  "saving": "正在保存翻译后的文档..."
 }

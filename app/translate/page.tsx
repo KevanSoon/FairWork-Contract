@@ -21,7 +21,8 @@ import {
   Maximize2,
   Eye,
   Lock,
-  AlertCircle
+  AlertCircle,
+  Loader2 
 } from "lucide-react"
 import { SignInButton, SignUpButton, UserButton, useUser, useAuth } from "@clerk/nextjs"
 import html2canvas from "html2canvas"
@@ -35,8 +36,9 @@ export default function TranslatePage() {
   // const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [targetLanguage, setTargetLanguage] = useState("")
   const [originalText, setOriginalText] = useState("")
-
   const { isSignedIn } = useUser()
+  const [saving, setSaving] = useState(false)
+
   
 
   // integrated usestates
@@ -176,16 +178,18 @@ export default function TranslatePage() {
     }
   }
 
-   const handleSaveAsImage = async () => {
+     const handleSaveAsImage = async () => {
     if (!iframeRef.current) return
-    const iframe = iframeRef.current
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
-    if (!iframeDoc || !iframeDoc.body) {
-      alert("Iframe content not available.")
-      return
-    }
+    setSaving(true) // show spinner
 
     try {
+      const iframe = iframeRef.current
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
+      if (!iframeDoc || !iframeDoc.body) {
+        alert("Iframe content not available.")
+        return
+      }
+
       const token = await getToken()
       if (!token) {
         alert("User not authenticated.")
@@ -200,7 +204,9 @@ export default function TranslatePage() {
         scale: 2,
       })
 
-      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob((b) => resolve(b), "image/png"))
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob((b) => resolve(b), "image/png")
+      )
 
       if (!blob) {
         alert("Failed to generate image.")
@@ -223,9 +229,10 @@ export default function TranslatePage() {
     } catch (error: any) {
       console.error("Save as image failed:", error)
       alert(`❌ Unexpected error: ${error.message}`)
+    } finally {
+      setSaving(false) // reset spinner
     }
   }
-
 
     // Effect to create and revoke object URL for the uploaded image
   useEffect(() => {
@@ -891,12 +898,22 @@ export default function TranslatePage() {
 
 <div className="space-y-3">
   <Button
-    onClick={handleSaveAsImage}
-    className="w-full bg-[#0076D6] hover:bg-[#005bb5] h-12 font-medium text-base"
-  >
-    <Download className="w-4 h-4 mr-2" />
-    {t("save_to_documents")}
-  </Button>
+      onClick={handleSaveAsImage}
+      disabled={saving}
+      className="w-full bg-[#0076D6] hover:bg-[#005bb5] h-12 font-medium text-base flex items-center justify-center"
+    >
+      {saving ? (
+        <>
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          {t("saving")}
+        </>
+      ) : (
+        <>
+          <Download className="w-4 h-4 mr-2" />
+          {t("save_to_documents")}
+        </>
+      )}
+    </Button>
 
   {/* <div className="grid grid-cols-2 gap-3">
     <Button onClick={handleCopy} variant="outline" className="bg-white hover:bg-gray-50 h-10 text-sm">
