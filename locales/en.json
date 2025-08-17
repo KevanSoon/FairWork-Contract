@@ -23,7 +23,7 @@
   "process_step_5_desc": "Export as a high-quality file and share with workers or agencies.",
   "faq_title": "Frequently Asked Questions",
   "faq_word_doc": "What file types are supported for translation?",
-  "faq_word_doc_desc": "Currently, you can upload JPEG and PNG files for translation. Simply click the Upload button on the homepage to select your image and open it in FairWork Contract's editor. We are also working on adding PDF support soon, so you’ll be able to translate directly from documents in the near future.",
+"faq_word_doc_desc": "You can currently upload JPEG and PNG files for translation. To start, simply log in and upload your document on our Translate page. PDF support will be available in the near future.",
   "faq_cookies": "How long will the translation process take?",
 "faq_cookies_desc": "The translation feature is currently hosted on a free backend, so it may take up to 10 minutes to complete a translation. Please be patient while your document is being processed.",
   "accept_cookies": "Accept all cookies",
