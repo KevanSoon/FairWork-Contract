@@ -107,7 +107,7 @@ export default function DocumentTranslator() {
       {/* Workspace Section */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-8 md:gap-12">
-          <img src="/img_2.png" alt="Translation workspace" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
+          <img src="/img_2.jpg" alt="Translation workspace" className="rounded-lg shadow-lg w-full lg:w-1/2 h-auto" />
           <div className="lg:w-1/2 text-center lg:text-left">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">{t("workspace_title")}</h2>
             <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">{t("workspace_desc")}</p>
@@ -163,10 +163,10 @@ export default function DocumentTranslator() {
                   <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0 ml-2" />
                 </div>
                 <p className="text-gray-600 mt-3 md:mt-4 text-sm md:text-base">{t("faq_cookies_desc")}</p>
-                <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                {/* <div className="flex flex-col sm:flex-row gap-3 mt-4">
                   <Button variant="outline" className="h-10 text-sm bg-transparent">{t("accept_cookies")}</Button>
                   <Button variant="outline" className="h-10 text-sm bg-transparent">{t("manage_cookies")}</Button>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           </div>
