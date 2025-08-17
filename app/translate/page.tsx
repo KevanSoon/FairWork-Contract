@@ -554,7 +554,7 @@ export default function TranslatePage() {
                       {t("sample_doc_invoice_desc")}
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">JPG</span>
+                      <span className="bg-gray-100 px-2 py-1 rounded-full">PNG</span>
                       <span>•</span>
                       <span>0.77 MB</span>
                     </div>
