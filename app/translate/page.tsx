@@ -13,18 +13,13 @@ import {
   RefreshCw,
   Upload,
   Download,
-  Edit3,
-  Copy,
-  Share2,
   RotateCcw,
   CheckCircle,
   FileText,
   Languages,
   ArrowRight,
-  ArrowLeft,
   Maximize2,
-  Menu,
-  X,
+  Eye,
   Lock,
   AlertCircle
 } from "lucide-react"
@@ -33,6 +28,7 @@ import html2canvas from "html2canvas"
 import ComparisonPanel from "../ComparisonPanel"
 import { useTranslations } from "next-intl"
 import { useLocale, Locale } from "@/app/LocaleContext";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function TranslatePage() {
 
@@ -66,6 +62,7 @@ export default function TranslatePage() {
   const closePanel = () => setIsPanelOpen(false);
   const t = useTranslations();
   const { locale, toggleLocale } = useLocale();
+  
 
   //from translate/results
   const [copied, setCopied] = useState(false)
@@ -282,6 +279,13 @@ export default function TranslatePage() {
 
 
   //end of integrated functions
+
+  const handleNewTranslation = () => {
+    // Clear the stored translation data
+    sessionStorage.removeItem("translationData")
+    // Navigate back to translate page for fresh start
+    window.location.href = "/translate"
+  }
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
@@ -747,6 +751,9 @@ export default function TranslatePage() {
   </div>
 )}
 
+
+
+
 {/* Result page */}
 {translatedHtml && (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
@@ -765,24 +772,84 @@ export default function TranslatePage() {
       </p>
     </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
-      <div className="lg:col-span-1 space-y-4 md:space-y-6">
-        {/* Translation Details Card */}
-        <Card className="shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="pb-3 md:pb-4">
-            <CardTitle className="text-base md:text-lg font-semibold text-gray-900">
-              {t("translation_details_title")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 md:space-y-6">
-            {/* ... file preview stays the same ... */}
-            <div className="pt-2 border-t border-gray-100">
-              <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
-                {t("translation_successful_badge")}
-              </Badge>
+           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="lg:col-span-1 space-y-4 md:space-y-6">
+            {/* Translation Details Card */}
+             <Card className="shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader className="pb-3 md:pb-4">
+        <CardTitle className="text-base md:text-lg font-semibold text-gray-900">Translation Details</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 md:space-y-6">
+        <div className="relative">
+          {uploadedFile?.type.startsWith("image/") && originalImageSrc ? (
+            <>
+              <img
+                src={originalImageSrc || "/placeholder.svg"}
+                alt="Document Preview"
+                className="w-full h-32 md:h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
+              />
+              <div className="absolute bottom-2 right-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-white/90 hover:bg-white text-gray-700 shadow-sm"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      Preview
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl w-full h-[90vh] p-0">
+                    <DialogHeader className="p-4 border-b">
+                      <DialogTitle className="text-lg font-semibold">
+                        {uploadedFile?.name || "Image Preview"}
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex-1 p-4 overflow-auto">
+                      <div className="flex items-center justify-center h-full">
+                        <img
+                          src={originalImageSrc || "/placeholder.svg"}
+                          alt="Full size preview"
+                          className="max-w-full max-h-full object-contain rounded-lg"
+                        />
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </>
+          ) : null}
+          <div className="absolute top-2 right-2">
+            <Badge variant="secondary" className="bg-white/90 text-gray-700 text-xs">
+              Original Document
+            </Badge>
+          </div>
+        </div>
+
+        <div className="space-y-3 md:space-y-4">
+          <div className="flex items-start gap-3">
+            <FileText className="w-4 h-4 md:w-5 md:h-5 text-gray-500 mt-0.5 flex-shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-gray-900 truncate">{uploadedFile?.name}</p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <Languages className="w-4 h-4 md:w-5 md:h-5 text-gray-500 mt-0.5 flex-shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-gray-900">→ {targetLanguage}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-gray-100">
+          <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
+            {t("translation_successful_badge")}
+          </Badge>
+        </div>
+      </CardContent>
+    </Card>
 
       {/* Document Summary     */}
     <>
@@ -857,7 +924,7 @@ export default function TranslatePage() {
     {t("save_to_documents")}
   </Button>
 
-  <div className="grid grid-cols-2 gap-3">
+  {/* <div className="grid grid-cols-2 gap-3">
     <Button onClick={handleCopy} variant="outline" className="bg-white hover:bg-gray-50 h-10 text-sm">
       <Copy className="w-4 h-4 mr-1" />
       {copied ? t("copied_button") : t("copy_button")}
@@ -867,10 +934,10 @@ export default function TranslatePage() {
       <Share2 className="w-4 h-4 mr-1" />
       {t("share_button")}
     </Button>
-  </div>
+  </div> */}
 
   <Link href="/translate" className="block">
-    <Button variant="outline" className="w-full bg-white hover:bg-gray-50 h-10 text-sm">
+    <Button variant="outline" className="w-full bg-white hover:bg-gray-50 h-10 text-sm" onClick={handleNewTranslation}>
       <RotateCcw className="w-4 h-4 mr-2" />
       {t("translate_another_button")}
     </Button>
