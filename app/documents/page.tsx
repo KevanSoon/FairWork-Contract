@@ -332,12 +332,13 @@ if (loading) {
 
 return (
   <div className="min-h-screen bg-gray-50">
- <div className="fixed 
-  top-16        /* mobile phones */
-  md:top-20     /* iPad / tablets */
-  lg:top-6      /* desktop */
-  right-4 md:right-6 
-  z-50"
+ <div
+  className="fixed 
+    bottom-4     /* mobile phones */
+    md:bottom-6  /* iPad / tablets */
+    lg:bottom-6  /* desktop */
+    right-4 md:right-6 
+    z-50"
 >
   <select
     value={locale}
