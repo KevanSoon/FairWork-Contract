@@ -599,8 +599,8 @@ export default function TranslatePage() {
                   <Button
                     onClick={() => {
                       const link = document.createElement("a")
-                      link.href = "/offer_letter.png"
-                      link.download = "offer_letter.png"
+                      link.href = "/payslip_example2.png"
+                      link.download = "payslip_example2.png"
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)
