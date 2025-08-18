@@ -141,7 +141,7 @@ export default function TranslatePage() {
     formData.append("file", uploadedFile)
 
     try {
-      const response = await fetch("https://kevansoon-backend.hf.space/api/translate_file_dual_ocr", {
+      const response = await fetch("https://kevansoon-backend.hf.space/api/translate_file_pytesseract", {
         method: "POST",
         body: formData,
       })
