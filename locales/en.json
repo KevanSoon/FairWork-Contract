@@ -96,7 +96,7 @@
   "translation_details_title": "Translation Details",
   "translation_successful_badge": "Successful",
   "document_summary_title": "Document Summary",
-  "document_summary_loading": "Analyzing contract...",
+  "document_summary_loading": "Analyzing contract... this may take up to 3–5 minutes.",
   "document_summary_empty": "Upload a document to see the summary.",
   "document_summary_button": "Click Here for Detailed Summary",
   "save_to_documents": "Save to Documents",

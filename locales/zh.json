@@ -96,7 +96,7 @@
   "translation_details_title": "翻译详情",
   "translation_successful_badge": "成功",
   "document_summary_title": "文档摘要",
-  "document_summary_loading": "正在分析合同...",
+  "document_summary_loading": "正在分析合同... 这可能需要 3–5 分钟。",
   "document_summary_empty": "上传文档以查看摘要。",
   "document_summary_button": "点击此处查看详细摘要",
   "save_to_documents": "保存到文档",
