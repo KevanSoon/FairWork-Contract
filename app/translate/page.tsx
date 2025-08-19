@@ -141,7 +141,7 @@ export default function TranslatePage() {
     formData.append("file", uploadedFile)
 
     try {
-      const response = await fetch("https://kevansoon-backend.hf.space/api/translate_file_gemini", {
+      const response = await fetch("https://kevansoon-backend.hf.space/api/translate_file_gemini_paddle", {
         method: "POST",
         body: formData,
       })
