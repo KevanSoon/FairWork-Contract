@@ -542,7 +542,7 @@ export default function TranslatePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
+            {/* <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
               <CardContent className="p-6">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
@@ -576,7 +576,7 @@ export default function TranslatePage() {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0076D6]/30">
               <CardContent className="p-6">
